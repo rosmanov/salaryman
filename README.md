@@ -35,10 +35,58 @@ symfony check:requirements
 ```
 3. Download the project, change to the project root directory.
 4. Run `composer install`. On production, use `--no-dev` (release/production mode).
+5. [Install Node.Js](https://nodejs.org/en/download/) (for Symfony Encore, frontend).
+6. [Install Yarn package manager](https://yarnpkg.com/lang/en/docs/install/) (for frontend).
+7. Run `yarn install`
+8. Install yarn packages for SASS files:
+```
+yarn add sass-loader@^7.0.1 node-sass --dev
+```
+
+## Enabling TLS in Development Environment
+
+For secure (TLS) connections in development environment follow the steps below:
+
+1. Install `certutil` (shipped with http://www.mozilla.org/projects/security/pki/nss/tools/; `apt` package: `libnss3-tools`, 'yum' package: `nss-tools`).
+2. Install a TLS certificate: `symfony server:ca:install`
+3. Re-start the local Web server, if it is running.
+4. Check if the application is accessible through HTTPS: `https://127.0.0.1:8000/`.
+
+# Configuring
+
+1. Change to thr project root directory.
+2. Create `.env.local` file and specify the database connection DSN as follows:
+```
+DATABASE_URL=mysql://salaryman:n2Nv69WvaVGwV4DM@127.0.0.1:3306/salaryman
+```
+
+## Notes
+
+The following example shows how to create a database and a user in MySQL console client.
+
+```
+mysql> create database salaryman default character set utf8;
+Query OK, 1 row affected (0.001 sec)
+
+mysql> create user salaryman@localhost identified by 'n2Nv69WvaVGwV4DM';
+Query OK, 0 rows affected (0.013 sec)
+
+mysql> grant all on salaryman.* to salaryman@localhost; 
+Query OK, 0 rows affected (0.001 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.001 sec)
+```
 
 # Building
 
-From the project root directory, run `composer install --no-dev`. (Don't use `--no-dev` option if you are going to run unit tests.)
+Change to the project root directory.
+
+1. Run `composer install --no-dev`. (Don't use `--no-dev` option if you are going to run unit tests.)
+2. Build frontend files:
+2.1. For development environment, `yarn encore dev`
+2.1. For production environment, `yarn encore production`
+3. Apply database migrations: `php bin/console doctrine:migrations:migrate`.
 
 # Running
 
