@@ -2,17 +2,17 @@
 
 namespace App\Controller;
 
-use App\Repository\PageRepository;
+use App\Repository\EmployeeRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractPageController
 {
     /**
-     * @Route("/", name="employee")
+     * @Route("/", name="employees")
      */
-    public function index()
+    public function index(EmployeeRepository $employeeRepo)
     {
-        $params['pages'] = $this->pageRepo->findAll();
-        return $this->renderPage('employee/list.html.twig', $params);
+        $parameters['employees'] = $employeeRepo->findBy([], ['last_name' => 'ASC']);
+        return $this->renderPage('employee/list.html.twig', $parameters);
     }
 }

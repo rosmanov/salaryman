@@ -11,7 +11,6 @@ class SalaryFactorsController extends AbstractPageController
      */
     public function index()
     {
-        $params['pages'] = $this->pageRepo->findAll();
         return $this->renderPage('salary-factors/list.html.twig', $params);
     }
 }

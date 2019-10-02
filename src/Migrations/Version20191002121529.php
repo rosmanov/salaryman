@@ -32,7 +32,7 @@ final class Version20191002121529 extends AbstractMigration
 
     private function init() : void
     {
-        $this->pages[] = ['uri' => '/', 'name' => 'Employee', 'position' => 0];
+        $this->pages[] = ['uri' => '/', 'name' => 'Employees', 'position' => 0];
         $this->pages[] = ['uri' => '/salary-factors', 'name' => 'Salary Factors', 'position' => 1];
     }
 

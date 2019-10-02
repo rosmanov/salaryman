@@ -69,10 +69,20 @@ body {
             color: blue;
         }
 
-        form.data-tables-search-form {
-            label {
-                margin: 0 .6rem;
-                font-weight: bolder;
+        table {
+            td, th {
+                padding: 0.9rem 1.6rem;
+            }
+
+            th {
+                font-weight: bold;
+                font-size: 120%;
+                text-align: center;
+            }
+
+            td.number {
+                text-align: right;
+                font-family: monospace;
             }
         }
     }
@@ -155,17 +165,6 @@ body {
     div.breadcrumbs {
         padding: 0.5rem 0;
         font-size: 86%;
-    }
-
-    // Fixing container positioning created by X-editable plugin
-    // https://vitalets.github.io/x-editable/docs.html
-    .editable-container.editable-inline {
-        display: inline-block;
-        z-index: 1;
-        position: relative;
-        padding: 2px;
-        border-radius: 6px;
-        background: lightgrey;
     }
 }
 

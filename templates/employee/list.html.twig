@@ -1,3 +1,28 @@
 {{ include('header.html.twig') }}
-<b>TODO</b>: emploee list
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Base Salary</th>
+            <th>Salary</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in employees %}
+        <tr>
+            {# TODO: name formatter #}
+            <td>{{ e.getLastName() }}, {{ e.getFirstName() }}</td>
+            <td class="number">{{ e.getAge() }}</td>
+            <td class="number">${{ e.getBaseSalary()|number_format(2, '.', ',') }}</td>
+            <td class="number">${{ e.getActualSalary()|number_format(2, '.', ',') }}</td>
+            <td>
+                <a href="/employee/edit/{{ e.getId() }}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {{ include('bottom.html.twig') }}

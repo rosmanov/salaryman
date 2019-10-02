@@ -39,6 +39,7 @@ abstract class AbstractPageController extends AbstractController
          */
         $request = $this->container->get('request_stack')->getCurrentRequest();
 
+        $parameters['pages'] = $this->pageRepo->findAll();
         $parameters['currentPage'] = $request instanceof Request
             ? $this->pageRepo->findOneByUri($request->getPathInfo())
             : null;

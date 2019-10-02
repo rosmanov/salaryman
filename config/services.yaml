@@ -23,5 +23,9 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Replacing JMS Serializer's object constructor with the doctrine_object_constructor
+    # results in merging the deserialized fields with the Doctrine entity (which is optionally
+    # fetched from database)
+    jms_serializer.object_constructor:
+        alias: jms_serializer.doctrine_object_constructor
+        public: false
