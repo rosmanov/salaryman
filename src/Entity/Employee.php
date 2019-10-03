@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EmployeeRepository")
@@ -19,37 +18,31 @@ class Employee
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"editable"})
      */
     private $first_name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"editable"})
      */
-    private $middle_name;
+    private $middle_name = '';
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"editable"})
      */
     private $last_name;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"editable"})
      */
     private $age;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"editable"})
      */
     private $using_company_car = false;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"editable"})
      */
     private $base_salary;
 
@@ -60,9 +53,19 @@ class Employee
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"editable"})
      */
     private $kids = 0;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
+     */
+    private $modified;
 
     public function getId(): ?int
     {
@@ -81,9 +84,9 @@ class Employee
         return $this;
     }
 
-    public function getMiddleName(): ?string
+    public function getMiddleName(): string
     {
-        return $this->middle_name;
+        return $this->middle_name ?? '';
     }
 
     public function setMiddleName(string $middle_name): self
@@ -163,5 +166,53 @@ class Employee
         $this->kids = $kids;
 
         return $this;
+    }
+
+    public function setModified(?\DateTimeInterface $modified): self
+    {
+        $this->modified = $modified;
+        return $this;
+    }
+
+    public function getModified(): ?\DateTimeInterface
+    {
+        return $this->modified;
+    }
+
+    public function setCreated(?\DateTimeInterface $created): self
+    {
+        $this->created = $created;
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    /**
+     * Returns full name of the person
+     *
+     * TODO: Person name formatting is actually a complicated task. But we'll
+     * simply concatenate the name parts, since this is not particularly
+     * important for this project.
+     *
+     * @return string
+     */
+    public function getFullName() : string
+    {
+        return $this->first_name . ' '
+            . ($this->middle_name ? "$this->middle_name " : '')
+            . $this->last_name;
+    }
+
+    /**
+     * Returns a title suitable for display in the admin panel
+     *
+     * @return string
+     */
+    public function getTitle() : string
+    {
+        return sprintf('Employee «%s»', $this->getFullName());
     }
 }

@@ -21,17 +21,21 @@ final class Version20191002150205 extends AbstractMigration
         $this->addSql(
             'CREATE TABLE employee (
                 id INT AUTO_INCREMENT NOT NULL,
-                first_name VARCHAR(255) NOT NULL,
-                middle_name VARCHAR(255) NOT NULL,
-                last_name VARCHAR(255) NOT NULL,
-                age INT NOT NULL,
+                first_name VARCHAR(255) NOT NULL DEFAULT "",
+                middle_name VARCHAR(255) NOT NULL DEFAULT "",
+                last_name VARCHAR(255) NOT NULL DEFAULT "",
+                age INT NOT NULL DEFAULT 0,
                 using_company_car TINYINT(1) NOT NULL DEFAULT 0,
                 base_salary DOUBLE PRECISION NOT NULL DEFAULT 0,
                 actual_salary DOUBLE PRECISION NOT NULL DEFAULT 0 COMMENT "`base_salary` with the salary factors applied",
                 kids INT NOT NULL DEFAULT 0 COMMENT "The number of kids",
+                `created` timestamp NOT NULL DEFAULT current_timestamp(),
+                `modified` timestamp NOT NULL DEFAULT current_timestamp(),
                 PRIMARY KEY(id),
                 INDEX first_name(first_name(10)),
                 INDEX last_name(last_name(10)),
+                INDEX `age`(`age`),
+                INDEX `kids`(`kids`)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
@@ -60,7 +64,8 @@ final class Version20191002150205 extends AbstractMigration
                     age = :age,
                     using_company_car = :using_company_car,
                     base_salary = :base_salary,
-                    kids = :kids',
+                    kids = :kids,
+                    created = NULL',
                 $row
             );
         }

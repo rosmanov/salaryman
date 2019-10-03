@@ -29,3 +29,9 @@ services:
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
+
+    admin.category:
+        class: App\Admin\EmployeeAdmin
+        arguments: [~, App\Entity\Employee, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Employee }

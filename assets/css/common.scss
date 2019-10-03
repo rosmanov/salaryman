@@ -42,7 +42,7 @@ body {
     padding-bottom: 6rem;
     min-height: 100%;
     font-size: 1.6em;
-    background-color: lightgray;
+    background-color: #f3f3f3;
 
     h6 { font-size: 1.5rem; }
     h5 { font-size: 1.8rem; }
@@ -51,6 +51,7 @@ body {
     h2 { font-size: 2.7rem; }
     h1 { font-size: 3rem; margin: 2rem 0; }
 
+    $danger_color: darkred;
 
     #content {
         margin: 0 auto;
@@ -63,10 +64,21 @@ body {
         }
         b { font-weight: bold; }
 
-        a,
-        a:visited,
-        a:hover {
+        a {
             color: blue;
+            &:visited, &:hover {
+                color: blue;
+            }
+
+            &.remove {
+                color: $danger_color;
+                &:visited, &:hover {
+                    color: $danger_color;
+                }
+
+            }
+            
+
         }
 
         table {
@@ -161,10 +173,6 @@ body {
     }
     p {
         margin-bottom: 2.4rem;
-    }
-    div.breadcrumbs {
-        padding: 0.5rem 0;
-        font-size: 86%;
     }
 }
 

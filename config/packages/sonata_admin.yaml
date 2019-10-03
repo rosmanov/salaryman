@@ -1,0 +1,14 @@
+sonata_admin:
+    title: 'Salaryman Admin'
+    show_mosaic_button: false
+    title_logo: build/img/logo.png
+    templates:
+        show: '@App/Admin/display_client.html.twig'
+    dashboard:
+        blocks:
+            - { type: sonata.admin.block.admin_list, position: left }
+
+sonata_block:
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]

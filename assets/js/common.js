@@ -7,5 +7,7 @@
 
 require('../css/common.scss');
 
+const logoPath = require('../img/logo.png');
+
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
