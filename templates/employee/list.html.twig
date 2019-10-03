@@ -16,8 +16,8 @@
             {# TODO: name formatter #}
             <td>{{ e.getLastName() }}, {{ e.getFirstName() }}</td>
             <td class="number">{{ e.getAge() }}</td>
-            <td class="number">${{ e.getBaseSalary()|number_format(2, '.', ',') }}</td>
-            <td class="number">${{ e.getActualSalary()|number_format(2, '.', ',') }}</td>
+            <td class="number">{{ e.getBaseSalary()|number_format_currency('USD') }}</td>
+            <td class="number">{{ e.getActualSalary()|number_format_currency('USD') }}</td>
             <td>
                 <a href="/admin/app/employee/{{ e.getId() }}/edit">Edit</a>
                 <a href="/admin/app/employee/{{ e.getId() }}/delete" class="remove">Delete</a>

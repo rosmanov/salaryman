@@ -19,12 +19,10 @@ Salaryman also features an expandable system of bonuses/deductions.
 
 # Requirements
 
-- PHP 7.1 or higher build with Ctype, iconv, JSON, PCRE, Session, SimpleXML, and Tokenizer.
+- PHP 7.1 or higher build with Ctype, Intl, iconv, JSON, PCRE, Session, SimpleXML, and Tokenizer.
 - Composer
 - Symfony binary (for development)
 - Nginx or Apache Web server (for production)
-
-It is recommended to enable the Intl extension (for PHP validators).
 
 # Installing
 
@@ -82,10 +80,11 @@ Query OK, 0 rows affected (0.001 sec)
 
 Change to the project root directory.
 
+0. In production environment, run `export NODE_ENV=prod`.
 1. Run `composer install --no-dev`. (Don't use `--no-dev` option if you are going to run unit tests.)
 2. Build frontend files:
 2.1. For development environment, `yarn encore dev`
-2.1. For production environment, `yarn encore production`
+2.2. For production environment, `yarn encore production`
 3. Apply database migrations: `php bin/console doctrine:migrations:migrate`.
 
 # Running

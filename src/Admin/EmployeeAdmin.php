@@ -12,10 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class EmployeeAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        // name of the ordered field (default = the model's id field, if any)
-        '_sort_by' => 'updatedAt',
-    ];
+    protected $translationDomain = 'SonataAdminBundle';
 
     protected function configureFormFields(\Sonata\AdminBundle\Form\FormMapper $form)
     {
@@ -72,7 +69,7 @@ final class EmployeeAdmin extends AbstractAdmin
                 'editable' => true,
             ])
             ->add('base_salary', 'currency', [
-                'currency' => '$',
+                'currency' => 'USD',
             ])
             ->add('kids', 'number')
         ;

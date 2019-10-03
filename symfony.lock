@@ -188,6 +188,9 @@
     "sonata-project/exporter": {
         "version": "2.0.1"
     },
+    "sonata-project/intl-bundle": {
+        "version": "2.7.0"
+    },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.1"
     },

@@ -30,8 +30,22 @@ services:
         alias: jms_serializer.doctrine_object_constructor
         public: false
 
-    admin.category:
+    sonata.admin.employee:
         class: App\Admin\EmployeeAdmin
         arguments: [~, App\Entity\Employee, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Employee }
+            - name: sonata.admin
+              manager_type: orm
+              label: "Employees"
+              group: "People"
+              icon: '<i class="fa fa-users"></i>'
+
+    sonata.admin.salary_factor:
+        class: App\Admin\SalaryFactorAdmin
+        arguments: [~, App\Entity\SalaryFactor, ~]
+        tags:
+            - name: sonata.admin
+              manager_type: orm
+              label: "Salary Factors"
+              icon: '<i class="fa fa-gear"></i>'
+              group: "Settings"

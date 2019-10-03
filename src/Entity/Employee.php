@@ -190,6 +190,12 @@ class Employee
         return $this->created;
     }
 
+
+    public function getSalaryCurrencyCode():  string
+    {
+        return 'USD';
+    }
+
     /**
      * Returns full name of the person
      *
@@ -214,5 +220,10 @@ class Employee
     public function getTitle() : string
     {
         return sprintf('Employee «%s»', $this->getFullName());
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle() ?: '';
     }
 }

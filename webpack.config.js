@@ -15,7 +15,7 @@ Encore
     //.setManifestKeyPrefix('build/')
 
     .copyFiles({
-        // soruce directory
+        // source directory
         from: './assets/img',
         // destination relative to output path
         to: 'img/[path][name].[ext]',
@@ -31,7 +31,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('common', './assets/js/common.js')
-    //.addEntry('page1', './assets/js/page1.js')
+    .addEntry('salary-factors', './assets/js/salary-factors.js')
     //.addEntry('page2', './assets/js/page2.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
@@ -39,7 +39,8 @@ Encore
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
-    .enableSingleRuntimeChunk()
+    //.enableSingleRuntimeChunk()
+    .disableSingleRuntimeChunk()
 
     /*
      * FEATURE CONFIG
@@ -71,7 +72,7 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()

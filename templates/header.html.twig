@@ -4,8 +4,12 @@
         <meta charset="utf-8">
         <title>{{ currentPage.name }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=0.86, maximum-scale=3.0, minimum-scale=0.86">
-        <link href="/build/common.css" rel="stylesheet" type="text/css">
-        <script src="/build/common.js" type="text/javascript"></script>
+        {#<link href="/build/common.css" rel="stylesheet" type="text/css">#}
+        {#<script src="/build/common.js" type="text/javascript"></script>#}
+
+        <!-- encore -->
+        {{ encore_entry_link_tags('common') }}
+        {{ encore_entry_script_tags('common') }}
     </head>
     <body>
     <header id="header">

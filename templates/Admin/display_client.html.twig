@@ -13,6 +13,15 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('common') }}
+{% endblock %}
+{% block  javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('common') }}
+{% endblock %}
+
 {% block title %}
     {{ 'title_show'|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
 {% endblock %}

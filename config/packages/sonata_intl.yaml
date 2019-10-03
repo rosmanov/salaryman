@@ -1,0 +1,8 @@
+sonata_intl:
+    timezone:
+        default: Europe/Moscow
+        locales:
+            ru:    Europe/Moscow
+            en_UK: Europe/London
+        detectors:
+            - sonata.intl.timezone_detector.locale
