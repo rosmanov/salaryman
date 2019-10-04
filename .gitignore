@@ -34,3 +34,6 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+# Local setting for the `symfony` app.
+.php-version

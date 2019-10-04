@@ -1,0 +1,19 @@
+{#
+Copied from vendor/sonata-project/admin-bundle/src/Resources/views/CRUD/edit.html.twig
+#}
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('salary-factors') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('salary-factors') }}
+{% endblock %}
+
+{#{% block form %}#}
+    {#{{ parent() }}#}
+    {# overrides ...#}
+{#{% endblock %}#}

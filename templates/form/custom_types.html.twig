@@ -1,0 +1,19 @@
+{# Note, "salary_factors" name comes from SalaryFactorsType PHP class #}
+{% block salary_factors_row %}
+    {{ form_label(form) }}
+    <div class="js-salary_factor js-querybuilder"
+         {% for key, value in attr %}
+         {{ key }}="{{ value }}"
+         {% endfor %}
+         data-rules="{{ rules|default('{}') }}"></div>
+    {% for child in form.children if not child.rendered %}
+        <div class="form-group">
+            {{ form_label(child) }}
+            {{ form_widget(child) }}
+            {{ form_help(child) }}
+            {{ form_errors(child) }}
+        </div>
+    {% endfor %}
+    {{ form_help(form) }}
+    {{ form_errors(form) }}
+{% endblock %}

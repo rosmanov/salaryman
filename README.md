@@ -23,78 +23,89 @@ Salaryman also features an expandable system of bonuses/deductions.
 - Composer
 - Symfony binary (for development)
 - Nginx or Apache Web server (for production)
+- A database management system supported by Doctrine ORM, preferably MySQL, or MariaDB.
 
-# Installing
+# Installing Dependencies
 
-1. [Install Composer](https://getcomposer.org/download/).
-2. For *development*, [Install Symfony](https://symfony.com/download) and check if all Symfony requirements are satisfied by running the following command:
+- [Install Composer](https://getcomposer.org/download/).
+- [Install Symfony](https://symfony.com/download)
+- [Install Node.Js](https://nodejs.org/en/download/) (for Symfony Encore, frontend).
+- [Install Yarn](https://yarnpkg.com/lang/en/docs/install/) (for frontend).
+- Check if all Symfony requirements are satisfied by running the following command:
 ```
 symfony check:requirements
-```
-3. Download the project, change to the project root directory.
-4. Run `composer install`. On production, use `--no-dev` (release/production mode).
-5. [Install Node.Js](https://nodejs.org/en/download/) (for Symfony Encore, frontend).
-6. [Install Yarn package manager](https://yarnpkg.com/lang/en/docs/install/) (for frontend).
-7. Run `yarn install`
-8. Install yarn packages for SASS files:
-```
-yarn add sass-loader@^7.0.1 node-sass --dev
 ```
 
 ## Enabling TLS in Development Environment
 
 For secure (TLS) connections in development environment follow the steps below:
 
-1. Install `certutil` (shipped with http://www.mozilla.org/projects/security/pki/nss/tools/; `apt` package: `libnss3-tools`, 'yum' package: `nss-tools`).
+1. Install `certutil` (shipped with [NSS Tools](http://www.mozilla.org/projects/security/pki/nss/tools/))
+- Apt (Debian-based systems): `libnss3-tools`
+- Yum (RPM-based systems): `nss-tools`
+- Portage: `dev-libs/nss [utils]`
 2. Install a TLS certificate: `symfony server:ca:install`
-3. Re-start the local Web server, if it is running.
-4. Check if the application is accessible through HTTPS: `https://127.0.0.1:8000/`.
 
 # Configuring
 
-1. Change to thr project root directory.
-2. Create `.env.local` file and specify the database connection DSN as follows:
+In the project root directory, create `.env.local` file and specify the DSN as follows:
 ```
 DATABASE_URL=mysql://salaryman:n2Nv69WvaVGwV4DM@127.0.0.1:3306/salaryman
 ```
 
 ## Notes
 
-The following example shows how to create a database and a user in MySQL console client.
+The following demonstrates a minimal database setup:
 
 ```
-mysql> create database salaryman default character set utf8;
-Query OK, 1 row affected (0.001 sec)
-
-mysql> create user salaryman@localhost identified by 'n2Nv69WvaVGwV4DM';
-Query OK, 0 rows affected (0.013 sec)
-
-mysql> grant all on salaryman.* to salaryman@localhost; 
-Query OK, 0 rows affected (0.001 sec)
-
-mysql> flush privileges;
-Query OK, 0 rows affected (0.001 sec)
+create database salaryman default character set utf8;
+create user salaryman@localhost identified by 'n2Nv69WvaVGwV4DM';
+grant all on salaryman.* to salaryman@localhost;
+flush privileges;
 ```
 
 # Building
 
-Change to the project root directory.
+- Go to the project root directory.
+- Set Node.js environment:
+```
+# Development
+export NODE_ENV=dev
 
-0. In production environment, run `export NODE_ENV=prod`.
-1. Run `composer install --no-dev`. (Don't use `--no-dev` option if you are going to run unit tests.)
-2. Build frontend files:
-2.1. For development environment, `yarn encore dev`
-2.2. For production environment, `yarn encore production`
-3. Apply database migrations: `php bin/console doctrine:migrations:migrate`.
+# Production
+export NODE_ENV=prod
+```
+- Install Composer packages:
+```
+# Development
+composer install
+
+# Production
+composer install --no-dev
+```
+- Build frontend files:
+```
+# Development
+yarn encore dev
+
+#Production
+yarn encore production
+```
+- Apply database migrations:
+```
+php bin/console doctrine:migrations:migrate
+```
 
 # Running
 
 For development, you can use the [Symfony local Web server](https://symfony.com/doc/current/setup/symfony_server.html), if you don't want to configure Nginx or Apache.
 
+In production environment, use a Web server such as Nginx, or Apache.
+
 # Testing
 
-1. Build the project in "development" mode (see "Installing" section above).
-2. Change to the project root, then run: `./bin/phpunit`.
+- Build the project in "development" mode (see "Installing" section above).
+- Change to the project root, then run: `./bin/phpunit`.
 
 # License
 

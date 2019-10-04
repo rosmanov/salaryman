@@ -4,3 +4,5 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         page_generator: '@App\Service\Generator\PageGenerator'
+    form_themes:
+        - 'form/custom_types.html.twig'

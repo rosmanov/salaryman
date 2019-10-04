@@ -43,9 +43,11 @@ services:
     sonata.admin.salary_factor:
         class: App\Admin\SalaryFactorAdmin
         arguments: [~, App\Entity\SalaryFactor, ~]
+        calls:
+            - [setTemplate, ['edit', 'Admin/SalaryFactorAdmin/edit.html.twig']]
         tags:
             - name: sonata.admin
               manager_type: orm
-              label: "Salary Factors"
+              label: 'Salary Factors'
               icon: '<i class="fa fa-gear"></i>'
-              group: "Settings"
+              group: 'Settings'

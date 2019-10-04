@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Admin\Form\Type\SalaryFactorsType;
 use App\Entity\Employee;
 use App\Entity\SalaryFactor;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -10,7 +11,6 @@ use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 final class SalaryFactorAdmin extends AbstractAdmin
 {
@@ -24,7 +24,7 @@ final class SalaryFactorAdmin extends AbstractAdmin
     {
         $form
             ->add('name', TextType::class, [ ])
-            ->add('rules', TextareaType::class, [
+            ->add('rules', SalaryFactorsType::class, [
                 'attr' => [
                     'class' => 'js-salary_factor js-querybuilder',
                 ]
