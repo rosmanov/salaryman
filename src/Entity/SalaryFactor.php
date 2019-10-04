@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Represents a factor affecting the salary.
  *
  * @ORM\Entity(repositoryClass="App\Repository\SalaryFactorRepository")
+ * @ORM\Entity @ORM\HasLifecycleCallbacks
  */
 class SalaryFactor
 {
@@ -51,6 +52,7 @@ class SalaryFactor
      * JSON data built with QueryBuilder (https://querybuilder.js.org/)
      *
      * @ORM\Column(type="text")
+     * @var string
      */
     private $rules = '{}';
 
@@ -76,16 +78,31 @@ class SalaryFactor
     private $value_type = self::NUMERIC_VALUE_TYPE;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTimeInterface
      */
     private $created;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTimeInterface
      */
     private $modified;
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps(): void
+    {
+        $dateTimeNow = new \DateTime('now');
+
+        $this->setModified($dateTimeNow);
+
+        if ($this->getCreated() === null) {
+            $this->setCreated($dateTimeNow);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -104,7 +121,7 @@ class SalaryFactor
         return $this;
     }
 
-    public function getRules(): ?string
+    public function getRules(): string
     {
         return $this->rules;
     }
@@ -174,5 +191,18 @@ class SalaryFactor
         $this->modified = $modified;
 
         return $this;
+    }
+
+    public function toString(): string
+    {
+        if ($this->getId()) {
+            return sprintf('Salary Factor #%d %s', $this->getId(), $this->getName());
+        }
+        return 'Salary Factor';
+    }
+
+    public function getTitle(): string
+    {
+        return $this->toString();
     }
 }

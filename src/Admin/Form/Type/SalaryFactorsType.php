@@ -4,27 +4,16 @@ declare(strict_types=1);
 namespace App\Admin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
+/**
+ * Represents a form control for building salary factor rules
+ * using QueryBuilder.
+ */
 class SalaryFactorsType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function getParent()
     {
-        $resolver->setDefaults([
-            'rules' => '{}',
-        ]);
-    }
-
-    //public function buildForm(FormBuilderInterface $builder, array $options)
-    //{
-    //}
-
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['rules'] = $options['rules'] ?? '{}';
-        $view->vars['attr'] = $options['attr'] ?? [];
+        return TextareaType::class;
     }
 }

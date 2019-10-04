@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Admin\Form\Type\SalaryFactorsType;
-use App\Entity\Employee;
 use App\Entity\SalaryFactor;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
@@ -76,9 +75,9 @@ final class SalaryFactorAdmin extends AbstractAdmin
 
     public function toString($object)
     {
-        if ($object instanceof Employee) {
+        if ($object instanceof SalaryFactor) {
             return $object->getTitle();
         }
-        return 'Employee';
+        return 'Salary Factor';
     }
 }
