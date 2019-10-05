@@ -81,13 +81,15 @@ final class SalaryFactorAdmin extends AbstractAdmin
             ->addIdentifier('name', 'string')
             ->add('type', 'choice', [
                 'choices' => [
-                    'Bonus' => SalaryFactor::BONUS_TYPE,
-                    'Deduction' => SalaryFactor::DEDUCTION_TYPE,
-                ]
+                    SalaryFactor::BONUS_TYPE => 'Bonus',
+                    SalaryFactor::DEDUCTION_TYPE => 'Deduction',
+                ],
             ])
             ->add('valueType', 'choice', [
-                    'Numeric' => SalaryFactor::NUMERIC_VALUE_TYPE,
-                    'Percent' => SalaryFactor::PERCENT_VALUE_TYPE,
+                'choices' => [
+                    SalaryFactor::NUMERIC_VALUE_TYPE => 'Numeric',
+                    SalaryFactor::PERCENT_VALUE_TYPE => 'Percent',
+                ]
             ])
             ->add('value', 'number', [
                 'editable' => true,
@@ -106,17 +108,30 @@ final class SalaryFactorAdmin extends AbstractAdmin
         $this->logger = $logger;
     }
 
+
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
-    public function postPersist($object): void
+    public function preUpdate($object)
     {
+        $this->updateSalary();
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
-    public function postUpdate($object): void
+    public function prePersist($object)
     {
+        $this->updateSalary();
+    }
+
+    /**
+     * Is called from preUpdate and prePersist methods.
+     */
+    private function updateSalary(): void
+    {
+        $this->logger->alert(
+            'TODO: schedule salary recalculation for all employees in ' . __METHOD__
+        );
     }
 }

@@ -5,9 +5,8 @@ namespace App\Command;
 
 use App\Repository\EmployeeRepository;
 use App\Repository\SalaryFactorRepository;
-use App\Service\SalaryCalculator;
+use App\Service\Calculator\SalaryCalculator;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

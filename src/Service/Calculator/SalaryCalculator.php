@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Calculator;
 
 use App\Entity\Employee;
 use App\Entity\SalaryFactor;
 use App\Service\Operator\OperatorFactory;
+use App\Service\SalaryFactorSerializer;
 use Psr\Log\LoggerInterface;
 use App\Service\Matcher\SalaryFactorMatcher;
 
-class SalaryCalculator
+class SalaryCalculator implements SalaryCalculatorInterface
 {
     /**
      * @var SalaryFactorSerializer
@@ -44,16 +45,15 @@ class SalaryCalculator
     }
 
     /**
-     * @param Employee $employee Employee who's salary should be calculated
-     * @param SalaryFactor[] $factors
-     * @return float The calculated salary based on Employee::$base_salary.
+     * {@inheritDoc}
      *
-     *  !!!!
-     *  $salary = $salary + sum($i)($salary * $percent[$i] / 100) + sum($i)($number[$i])
-     *  !!!!
-     *
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * Algorithm:
+     * <pre>
+     * $salary = $baseSalary + ∑($baseSalary * $percent[$i] / 100) + ∑$number[$i]
+     * </pre>
+     * where `$percent[$i]` and `$number[$i]` are:
+     * - positive for `BONUS_TYPE` factor;
+     * - negative for `DEDUCTION_TYPE` factor.
      */
     public function calculate(Employee $employee, array $factors): float
     {

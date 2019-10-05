@@ -30,9 +30,16 @@ services:
         alias: jms_serializer.doctrine_object_constructor
         public: false
 
+    App\Service\Calculator\SalaryCalculatorInterface:
+        class: 'App\Service\Calculator\SalaryCalculator'
+
     sonata.admin.employee:
         class: App\Admin\EmployeeAdmin
         arguments: [~, App\Entity\Employee, ~]
+        calls:
+            - [setSalaryCalculator, ['@App\Service\Calculator\SalaryCalculatorInterface']]
+            - [setSalaryFactorRepository, ['@App\Repository\SalaryFactorRepository']]
+            - [setLogger, ['@logger']]
         tags:
             - name: sonata.admin
               manager_type: orm
