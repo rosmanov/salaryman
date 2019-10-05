@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Employee
 {
+    public const AGE_FIELD = 'age';
+    public const KIDS_FIELD = 'kids';
+    public const USING_COMPANY_CAR_FIELD = 'using_company_car';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -219,7 +223,7 @@ class Employee
      */
     public function getTitle() : string
     {
-        return sprintf('Employee «%s»', $this->getFullName());
+        return sprintf('Employee #%d «%s»', $this->getId(), $this->getFullName());
     }
 
     public function __toString()

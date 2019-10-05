@@ -98,9 +98,18 @@ php bin/console doctrine:migrations:migrate
 
 # Running
 
-For development, you can use the [Symfony local Web server](https://symfony.com/doc/current/setup/symfony_server.html), if you don't want to configure Nginx or Apache.
+## Web Server
 
-In production environment, use a Web server such as Nginx, or Apache.
+For development, you can use the [Symfony local Web server](https://symfony.com/doc/current/setup/symfony_server.html), if you don't want to configure Nginx or Apache.
+(In production environment you would use a Web server such as Nginx, or Apache.)
+
+## Re-calculating Salaries in CLI
+
+From the project root directory, run:
+
+```
+bin/console app:calc-salaries -vvv
+```
 
 # Testing
 

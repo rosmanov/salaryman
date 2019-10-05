@@ -2,18 +2,9 @@
 {% block salary_factors_row %}
     {{ form_label(form) }}
     <div class="js-salary_factor js-querybuilder"
-         {% for k, v in attr %}{{ k }}="{{ v }}" {% endfor %}
          data-rules="{{ value }}"
          data-target-id="{{ id }}"></div>
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value }}" />
-    {#{% for child in form.children if not child.rendered %}#}
-        {#<div class="form-group">#}
-            {#{{ form_label(child) }}#}
-            {#{{ form_widget(child) }}#}
-            {#{{ form_help(child) }}#}
-            {#{{ form_errors(child) }}#}
-        {#</div>#}
-    {#{% endfor %}#}
     {{ form_help(form) }}
     {{ form_errors(form) }}
 {% endblock %}

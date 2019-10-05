@@ -37,6 +37,11 @@ final class EmployeeAdmin extends AbstractAdmin
                 'currency' => 'USD',
                 'required' => false,
             ])
+            ->add('actual_salary', MoneyType::class, [
+                'empty_data' => 0,
+                'currency' => 'USD',
+                'required' => false,
+            ])
             ->add('kids', NumberType::class, [
                 'empty_data' => 0,
                 'required' => false,
@@ -54,6 +59,7 @@ final class EmployeeAdmin extends AbstractAdmin
             ->add('age')
             ->add('using_company_car')
             ->add('base_salary')
+            ->add('actual_salary')
         ;
     }
 
@@ -70,6 +76,10 @@ final class EmployeeAdmin extends AbstractAdmin
             ])
             ->add('base_salary', 'currency', [
                 'currency' => 'USD',
+            ])
+            ->add('actual_salary', 'currency', [
+                'currency' => 'USD',
+                'label' => 'Salary',
             ])
             ->add('kids', 'number')
         ;

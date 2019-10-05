@@ -45,6 +45,7 @@ services:
         arguments: [~, App\Entity\SalaryFactor, ~]
         calls:
             - [setTemplate, ['edit', 'Admin/SalaryFactorAdmin/edit.html.twig']]
+            - [setLogger, ['@logger']]
         tags:
             - name: sonata.admin
               manager_type: orm

@@ -72,10 +72,10 @@ class SalaryFactor
     /**
      * One of *_VALUE_TYPE constants.
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="value_type")
      * @var int
      */
-    private $value_type = self::NUMERIC_VALUE_TYPE;
+    private $valueType = self::NUMERIC_VALUE_TYPE;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -159,12 +159,12 @@ class SalaryFactor
 
     public function getValueType(): ?int
     {
-        return $this->value_type;
+        return $this->valueType;
     }
 
     public function setValueType(int $value_type): self
     {
-        $this->value_type = $value_type;
+        $this->valueType = $value_type;
 
         return $this;
     }
@@ -193,7 +193,7 @@ class SalaryFactor
         return $this;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         if ($this->getId()) {
             return sprintf('Salary Factor #%d %s', $this->getId(), $this->getName());
@@ -203,6 +203,6 @@ class SalaryFactor
 
     public function getTitle(): string
     {
-        return $this->toString();
+        return $this->__toString();
     }
 }
