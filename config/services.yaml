@@ -30,8 +30,22 @@ services:
         alias: jms_serializer.doctrine_object_constructor
         public: false
 
-    App\Service\Calculator\SalaryCalculatorInterface:
-        class: 'App\Service\Calculator\SalaryCalculator'
+    App\Service\Calculator\SalaryCalculatorInterface: '@App\Service\Calculator\SalaryCalculator'
+
+    App\Producer\EventProducer:
+        class: 'App\Producer\EventProducer'
+        arguments:
+            - '@old_sound_rabbit_mq.connection.default'
+            - calc_salaries
+            - calc_salaries
+
+    App\Producer\EventProducerInterface: '@App\Producer\EventProducer'
+
+    App\Consumer\CalcSalariesConsumer:
+        class: 'App\Consumer\CalcSalariesConsumer'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        public: true
 
     sonata.admin.employee:
         class: App\Admin\EmployeeAdmin
@@ -39,6 +53,7 @@ services:
         calls:
             - [setSalaryCalculator, ['@App\Service\Calculator\SalaryCalculatorInterface']]
             - [setSalaryFactorRepository, ['@App\Repository\SalaryFactorRepository']]
+            - [setEventProducer, ['@App\Producer\EventProducerInterface']]
             - [setLogger, ['@logger']]
         tags:
             - name: sonata.admin
@@ -53,6 +68,8 @@ services:
         calls:
             - [setTemplate, ['edit', 'Admin/SalaryFactorAdmin/edit.html.twig']]
             - [setLogger, ['@logger']]
+            - [setEmployeeRepository, ['@App\Repository\EmployeeRepository']]
+            - [setEventProducer, ['@App\Producer\EventProducerInterface']]
         tags:
             - name: sonata.admin
               manager_type: orm

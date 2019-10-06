@@ -55,7 +55,7 @@ class SalaryCalculator implements SalaryCalculatorInterface
      * - positive for `BONUS_TYPE` factor;
      * - negative for `DEDUCTION_TYPE` factor.
      */
-    public function calculate(Employee $employee, array $factors): float
+    public function calculate(Employee $employee, $factors): float
     {
         $salary = $employee->getBaseSalary();
 
@@ -65,12 +65,18 @@ class SalaryCalculator implements SalaryCalculatorInterface
             if ($this->ruleMatcher->matches($employee, $rule)) {
                 $diff = $this->calculateFactorValue($factor, $employee->getBaseSalary());
                 $this->logger->info(sprintf(
-                    "[%s] [Diff] %f [Factor] %s",
+                    '[%s] [Diff] %f [Factor] %s',
                     $employee->getTitle(),
                     $diff,
                     $factor->getTitle()
                 ));
                 $salary += $diff;
+            } else {
+                $this->logger->debug(sprintf(
+                    '[%s] Employee does not match factor %s',
+                    $employee->getTitle(),
+                    $factor->getTitle()
+                ));
             }
         }
 

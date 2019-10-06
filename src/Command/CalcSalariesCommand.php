@@ -85,8 +85,8 @@ class CalcSalariesCommand extends ContainerAwareCommand
             }
             $io->progressStart($count);
 
-            for ($offset = 0, $step = self::EMPLOYEE_STEP ;; $offset += $step) {
-                $employees = $this->employeeRepo->findBy([], null, $step, $offset);
+            for ($offset = 0 ;; $offset += self::EMPLOYEE_STEP) {
+                $employees = $this->employeeRepo->findBy([], null, self::EMPLOYEE_STEP, $offset);
                 if (!$employees) {
                     break;
                 }

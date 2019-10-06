@@ -17,13 +17,17 @@ Salaryman also features an expandable system of bonuses/deductions.
 - Bob is 52, he is using a company car and his salary is $4000
 - Charlie is 36, he has 3 kids, company car and his salary is $5000
 
-# Requirements
+# Dependencies
 
 - PHP 7.1 or higher build with Ctype, Intl, iconv, JSON, PCRE, Session, SimpleXML, and Tokenizer.
 - Composer
 - Symfony binary (for development)
 - Nginx or Apache Web server (for production)
 - A database management system supported by Doctrine ORM, preferably MySQL, or MariaDB.
+
+## Optional Dependencies
+
+- [RabbitMQ](https://en.wikipedia.org/wiki/RabbitMQ) server (for automatic salary re-calculation)
 
 # Installing Dependencies
 
@@ -48,9 +52,20 @@ For secure (TLS) connections in development environment follow the steps below:
 
 # Configuring
 
+## DSN
+
 In the project root directory, create `.env.local` file and specify the DSN as follows:
 ```
 DATABASE_URL=mysql://salaryman:n2Nv69WvaVGwV4DM@127.0.0.1:3306/salaryman
+```
+
+## RabbitMQ
+
+RabbitMQ bundle is configured for the default server settings in `config/packages/old_sound_rabbit_mq.yaml`. So you don't need to change them, if you have the default RabbitMQ setup.
+
+If you do not want to configure RabbitMQ, then the automatic salary calculation will be disabled, and the only way to update the salaries would be running the following command:
+```
+bin/console --no-ansi rabbitmq:consumer  -vv calc_salaries
 ```
 
 ## Notes
@@ -109,6 +124,13 @@ From the project root directory, run:
 
 ```
 bin/console app:calc-salaries -vvv
+```
+
+## Salary Calculator
+
+Launch the RabbitMQ consumer for automatic salary re-calculation:
+```
+bin/console --no-ansi rabbitmq:consumer  -vv calc_salaries
 ```
 
 # Testing

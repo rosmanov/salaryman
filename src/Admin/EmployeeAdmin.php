@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Admin\Form\Type\ActualSalaryType;
+use App\Dto\Message\SalaryUpdateMessage;
 use App\Entity\Employee;
+use App\Producer\EventProducerInterface;
 use App\Repository\SalaryFactorRepository;
 use App\Service\Calculator\SalaryCalculatorInterface;
 use Psr\Log\LoggerInterface;
@@ -29,6 +32,11 @@ final class EmployeeAdmin extends AbstractAdmin
      * @var SalaryFactorRepository
      */
     private $salaryFactorRepo;
+
+    /**
+     * @var EventProducerInterface
+     */
+    private $eventProducer;
 
     /**
      * @var LoggerInterface
@@ -58,12 +66,12 @@ final class EmployeeAdmin extends AbstractAdmin
                 'currency' => 'USD',
                 'required' => false,
             ])
-            ->add('actual_salary', MoneyType::class, [
+            ->add('actual_salary', ActualSalaryType::class, [
                 'empty_data' => 0,
                 'currency' => 'USD',
                 'required' => false,
                 'disabled' => true,
-                'help' => 'Is calculated automatically based on the Salary Factors',
+                'sonata_help' => 'Calculation of this value is delayed (processed in the background)',
             ])
             ->add('kids', NumberType::class, [
                 'empty_data' => 0,
@@ -103,6 +111,8 @@ final class EmployeeAdmin extends AbstractAdmin
             ->add('actual_salary', 'currency', [
                 'currency' => 'USD',
                 'label' => 'Salary',
+                'template' => 'Admin/SalaryFactorAdmin/list_actual_salary.html.twig',
+
             ])
             ->add('kids', 'number')
         ;
@@ -146,34 +156,65 @@ final class EmployeeAdmin extends AbstractAdmin
         $this->logger = $logger;
     }
 
+
+    public function setEventProducer(EventProducerInterface $eventProducer): void
+    {
+        $this->eventProducer = $eventProducer;
+    }
+
+
     /**
      * {@inheritDoc}
+     * @param Employee $object
      */
     public function preUpdate($object)
     {
+        if ($object instanceof Employee) {
+            $object->setActualSalaryInconsistent();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param Employee $object
+     */
+    public function prePersist($object)
+    {
+        if ($object instanceof Employee) {
+            $object->setActualSalaryInconsistent();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function postUpdate($object)
+    {
         $this->updateSalary($object);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function prePersist($object)
+    public function postPersist($object)
     {
         $this->updateSalary($object);
     }
 
     /**
-     * Is called from preUpdate and prePersist methods.
+     * Is called from postUpdate and postPersist methods.
      */
     private function updateSalary(Employee $employee): void
     {
-        /**
-         * @todo perform calculations in a background job. (Send a message to some
-         * message queue such as RabbitMQ.)
-         */
-        $factors = $this->salaryFactorRepo->findAll();
-        $salary = $this->salaryCalculator->calculate($employee, $factors);
-        $this->logger->debug("Updating employee salary to $salary, employee #" . $employee->getId());
-        $employee->setActualSalary($salary);
+        // The following was off-loaded to a RabbitMq consumer:
+        //$factors = $this->salaryFactorRepo->findAll();
+        //$salary = $this->salaryCalculator->calculate($employee, $factors);
+        //$this->logger->debug("Updating employee salary to $salary, employee #" . $employee->getId());
+        //$employee->setActualSalary($salary);
+
+        // XXX Mark $employee salary status as "being calculated"?
+        $message = new SalaryUpdateMessage();
+        $message->addEmployee($employee);
+        $this->eventProducer->send($message);
     }
 }

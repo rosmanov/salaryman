@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Admin\Form\Type\SalaryFactorsType;
+use App\Dto\Message\SalaryFactorUpdateMessage;
 use App\Entity\SalaryFactor;
+use App\Producer\EventProducerInterface;
+use App\Repository\EmployeeRepository;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
@@ -31,6 +34,16 @@ final class SalaryFactorAdmin extends AbstractAdmin
      * @var string
      */
     protected $translationDomain = 'SonataAdminBundle';
+
+    /**
+     * @var EventProducerInterface
+     */
+    private $eventProducer;
+
+    /**
+     * @var EmployeeRepository
+     */
+    private $employeeRepo;
 
     /**
      * @inheritdoc
@@ -108,30 +121,57 @@ final class SalaryFactorAdmin extends AbstractAdmin
         $this->logger = $logger;
     }
 
+    public function setEmployeeRepository(EmployeeRepository $employeeRepo): void
+    {
+        $this->employeeRepo = $employeeRepo;
+    }
+
+    public function setEventProducer(EventProducerInterface $eventProducer): void
+    {
+        $this->eventProducer = $eventProducer;
+    }
 
     /**
      * {@inheritDoc}
+     * @param Employee $object
      */
     public function preUpdate($object)
     {
-        $this->updateSalary();
+        $this->employeeRepo->resetActualSalary();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param Employee $object
+     */
+    public function prePersist($object)
+    {
+        $this->employeeRepo->resetActualSalary();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function prePersist($object)
+    public function postUpdate($object)
     {
-        $this->updateSalary();
+        $this->updateSalary($object);
     }
 
     /**
-     * Is called from preUpdate and prePersist methods.
+     * {@inheritDoc}
      */
-    private function updateSalary(): void
+    public function postPersist($object)
     {
-        $this->logger->alert(
-            'TODO: schedule salary recalculation for all employees in ' . __METHOD__
-        );
+        $this->updateSalary($object);
+    }
+
+    /**
+     * Is called from postUpdate and postPersist methods.
+     */
+    private function updateSalary(SalaryFactor $factor): void
+    {
+        $message = new SalaryFactorUpdateMessage();
+        $message->addFactor($factor);
+        $this->eventProducer->send($message);
     }
 }

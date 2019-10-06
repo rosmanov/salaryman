@@ -12,6 +12,6 @@ class EqualOperator implements ComparisonOperatorInterface
      */
     public function evaluate($operandLeft, $operandRight): bool
     {
-        return $operandLeft == $operandRight;
+        return $operandLeft === $operandRight;
     }
 }

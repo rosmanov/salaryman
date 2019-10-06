@@ -14,6 +14,14 @@ class Employee
     public const USING_COMPANY_CAR_FIELD = 'using_company_car';
 
     /**
+     * The value used to represent inconsistent actual salary
+     * meaning that the salary should be re-calculated and updated.
+     *
+     * @var float
+     */
+    private const SALARY_INCONSISTENT = 0.0;
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -51,9 +59,9 @@ class Employee
     private $base_salary;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=false)
      */
-    private $actual_salary;
+    private $actual_salary = self::SALARY_INCONSISTENT;
 
     /**
      * @ORM\Column(type="integer")
@@ -156,6 +164,40 @@ class Employee
     public function setActualSalary(float $actual_salary): self
     {
         $this->actual_salary = $actual_salary;
+
+        return $this;
+    }
+
+    /**
+     * Returns the salary value indicating that the salary is inconsistent
+     * (needs to be re-calculated).
+     *
+     * @return float
+     */
+    public static function getSalaryInconsistentValue(): float
+    {
+        return self::SALARY_INCONSISTENT;
+    }
+
+
+    /**
+     * Checks if the actual salary is consistent (no need to re-calculate it)
+     *
+     * @return bool
+     */
+    public function isActualSalaryConsistent(): bool
+    {
+        return $this->actual_salary !== self::SALARY_INCONSISTENT;
+    }
+
+    /**
+     * Marks the actual salary value inconsistent (need to be re-calculated)
+     *
+     * @return $this
+     */
+    public function setActualSalaryInconsistent(): self
+    {
+        $this->actual_salary = self::SALARY_INCONSISTENT;
 
         return $this;
     }

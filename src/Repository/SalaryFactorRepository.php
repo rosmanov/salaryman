@@ -12,6 +12,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method SalaryFactor|null findOneBy(array $criteria, array $orderBy = null)
  * @method SalaryFactor[]    findAll()
  * @method SalaryFactor[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SalaryFactor[]    findById(array $ids, array $orderBy = null, $limit = null, $offset = null)
  */
 class SalaryFactorRepository extends ServiceEntityRepository
 {

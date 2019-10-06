@@ -12,11 +12,11 @@ interface SalaryCalculatorInterface
      * Calculates salary of an employee. Returns the result of calculation.
      *
      * @param Employee $employee Employee who's salary should be calculated
-     * @param SalaryFactor[] $factors
+     * @param \Generator|SalaryFactor[] $factors
      * @return float The calculated salary based on Employee::$base_salary.
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function calculate(Employee $employee, array $factors): float;
+    public function calculate(Employee $employee, $factors): float;
 }

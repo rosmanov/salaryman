@@ -1,10 +1,24 @@
 {# Note, "salary_factors" name comes from SalaryFactorsType PHP class #}
 {% block salary_factors_row %}
     {{ form_label(form) }}
-    <div class="js-salary_factor js-querybuilder"
+    <div class="js-salary_factor js-querybuilder form-group"
          data-rules="{{ value }}"
          data-target-id="{{ id }}"></div>
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value }}" />
     {{ form_help(form) }}
     {{ form_errors(form) }}
+{% endblock %}
+
+
+{% block actual_salary_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+        {% if value != 0.0 %}
+            {{ form_widget(form) }}
+        {% else %}
+        <div>In the process of re-calculation. <a href="javascript:location.reload()">Refresh</a> the page after a while.</div>
+        {% endif %}
+        {{ form_help(form) }}
+        {{ form_errors(form) }}
+    </div>
 {% endblock %}
