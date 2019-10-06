@@ -28,7 +28,7 @@ class SalaryFactorSerializer
             $rules = $json;
         }
         if (!(isset($rules) && is_array($rules))) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException(var_export($rules, true));
         }
 
         $builder = new SalaryFactorRuleBuilder();

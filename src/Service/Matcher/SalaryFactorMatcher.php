@@ -36,14 +36,27 @@ class SalaryFactorMatcher
      *
      * @return bool
      *
-     * @throws \RuntimeExceptio
+     * @throws \RuntimeException
      */
     public function matches(Employee $employee, SalaryFactorRule $rule): bool
     {
         if ($rule->isGroup()) {
+            $condition = $rule->getCondition();
             foreach ($rule->getRules() as $childRule) {
-                if (!$this->matches($employee, $childRule)) {
-                    return false;
+                $matches = $this->matches($employee, $childRule);
+                switch ($condition) {
+                    case 'AND':
+                        if (!$matches) {
+                            return false;
+                        }
+                        break;
+                    case 'OR':
+                        if ($matches) {
+                            return true;
+                        }
+                        break;
+                    default:
+                        throw new \RuntimeException("Unknown condition: $condition");
                 }
             }
             return true;
