@@ -35,10 +35,6 @@ Salaryman also features an expandable system of bonuses/deductions.
 - [Install Symfony](https://symfony.com/download)
 - [Install Node.Js](https://nodejs.org/en/download/) (for Symfony Encore, frontend).
 - [Install Yarn](https://yarnpkg.com/lang/en/docs/install/) (for frontend).
-- Check if all Symfony requirements are satisfied by running the following command:
-```
-symfony check:requirements
-```
 
 ## Enabling TLS in Development Environment
 
@@ -68,6 +64,35 @@ If you do not want to configure RabbitMQ, then the automatic salary calculation 
 bin/console --no-ansi rabbitmq:consumer  -vv calc_salaries
 ```
 
+## PHP version
+
+Symfony might use a PHP version different from the one configured on your machine. For example, on my Gentoo machine I have  PHP 7.3 enabled for the CLI SAPI:
+```
+ruslan@osmanov-pc ~/projects/salaryman $ eselect php list cli
+  [1]   php7.1
+  [2]   php7.2
+  [3]   php7.3 *
+```
+
+However, Symfony somehow managed to choose 7.1:
+```
+$ symfony local:php:list
+┌─────────┬───────────┬────────────┬─────────┬─────────┬─────────┬─────────┐
+│ Version │ Directory │  PHP CLI   │ PHP FPM │ PHP CGI │ Server  │ System? │
+├─────────┼───────────┼────────────┼─────────┼─────────┼─────────┼─────────┤
+│ 7.1.30  │ /usr      │ bin/php7.1 │         │         │ PHP CLI │ *       │
+│ 7.2.19  │ /usr      │ bin/php7.2 │         │         │ PHP CLI │         │
+│ 7.3.9   │ /usr      │ bin/php    │         │         │ PHP CLI │         │
+│ 7.3.9   │ /usr      │ bin/php7.3 │         │         │ PHP CLI │         │
+└─────────┴───────────┴────────────┴─────────┴─────────┴─────────┴─────────┘
+```
+(**7.1.30 was highlighted**)
+
+For consistence, create `.php-version` file in the project root directory and put the desired PHP version number there, e.g.:
+```
+printf '7.3.9\n' > .php-version
+```
+
 ## Notes
 
 The following demonstrates a minimal database setup:
@@ -81,33 +106,37 @@ flush privileges;
 
 # Building
 
-- Go to the project root directory.
-- Set Node.js environment:
+Execute the following commands from the project root directory.
+
+## Development Environment
+
 ```
-# Development
+# Set Node.js environment
 export NODE_ENV=dev
 
-# Production
-export NODE_ENV=prod
-```
-- Install Composer packages:
-```
-# Development
+#Install Composer packages
 composer install
 
-# Production
-composer install --no-dev
-```
-- Build frontend files:
-```
-# Development
+# Build frontend files
 yarn encore dev
 
-#Production
+# Check if all Symfony requirements are satisfied
+symfony check:requirements
+
+# Apply database migrations
+php bin/console doctrine:migrations:migrate
+```
+
+## Production Environment
+
+This is a demo project, so nobody will run it on "production". But, for the sake of completeness, I'll also list the commands you'd run in production environment:
+
+```
+export NODE_ENV=prod
+composer install --no-dev
+yarn encore dev
 yarn encore production
-```
-- Apply database migrations:
-```
+symfony check:requirements
 php bin/console doctrine:migrations:migrate
 ```
 
@@ -115,10 +144,14 @@ php bin/console doctrine:migrations:migrate
 
 ## Web Server
 
-For development, you can use the [Symfony local Web server](https://symfony.com/doc/current/setup/symfony_server.html), if you don't want to configure Nginx or Apache.
-(In production environment you would use a Web server such as Nginx, or Apache.)
+In development environment, it is okay to run the [Symfony local Web server](https://symfony.com/doc/current/setup/symfony_server.html), if you don't want to configure Nginx or Apache.
+However, in production environment, a full-fledged Web server (such as Nginx, or Apache) is a must.
 
-## Re-calculating Salaries in CLI
+```
+symfony server:start
+```
+
+## Re-calculating Salaries in command line interface
 
 From the project root directory, run:
 
