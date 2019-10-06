@@ -1,5 +1,7 @@
 {{ include('header.html.twig') }}
 
+<p>This is just a minimal implementation of a page controller. For a nicer look, we might simply plug <a href="https://sonata-project.org/bundles/page/3-x/doc/index.html" rel="nofollow" target="_blank">Sonata Project's Page Bundle</a>. But I decided to not overcomplicate this part, since <b>the fun is in the <a href="{{ path('admin_app_employee_list') }}">Admin area</a></b>.</p>
+
 <table>
     <thead>
         <tr>
@@ -12,12 +14,19 @@
     </thead>
     <tbody>
         {% for e in employees %}
+        {% set currencyCode = e.getSalaryCurrencyCode() %}
         <tr>
             {# TODO: name formatter #}
             <td>{{ e.getLastName() }}, {{ e.getFirstName() }}</td>
             <td class="number">{{ e.getAge() }}</td>
-            <td class="number">{{ e.getBaseSalary()|number_format_currency('USD') }}</td>
-            <td class="number">{{ e.getActualSalary()|number_format_currency('USD') }}</td>
+            <td class="number">{{ e.getBaseSalary()|number_format_currency(currencyCode) }}</td>
+            <td class="number">
+                {% if e.getActualSalary() != 0.0 %}
+                    {{ e.getActualSalary()|number_format_currency(currencyCode) }}
+                {% else %}
+                    In Progress
+                {% endif %}
+            </td>
             <td>
                 <a href="/admin/app/employee/{{ e.getId() }}/edit">Edit</a>
                 <a href="/admin/app/employee/{{ e.getId() }}/delete" class="remove">Delete</a>
